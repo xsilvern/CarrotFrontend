@@ -16,12 +16,16 @@ import Favorite from "@mui/icons-material/Favorite";
 
 type TradeType = {
   price: number;
-  interest: boolean;
-  Suggestion_possible: boolean;
+  isInterest: boolean;
+  isAdjustable: boolean;
 };
 
 const TradeAppBar = (App_intertype: TradeType): JSX.Element => {
-  const { price, interest, Suggestion_possible } = App_intertype;
+  const {
+    price,
+    isInterest: interest,
+    isAdjustable: Suggestion_possible,
+  } = App_intertype;
 
   return (
     <AppBar

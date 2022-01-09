@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -23,8 +24,14 @@ const ImageTheme = {
 };
 
 const Home = (): JSX.Element => {
+  const [tradeItems, setTradeItems] = useState<TradeItem[]>([]);
+  const readArticles = async () => {
+    const { data } = await axios.get("http://localhost:5000/trade/articles");
+    setTradeItems(data);
+  };
+
   useEffect(() => {
-    alert("hello");
+    readArticles();
   }, []);
   return (
     <Box>
@@ -34,11 +41,7 @@ const Home = (): JSX.Element => {
             <ListItem key={item.id}>
               <ListItemButton>
                 <ListItemAvatar>
-                  <Avatar
-                    variant="rounded"
-                    src={item.imageUrl}
-                    sx={ImageTheme}
-                  />
+                  <Avatar variant="rounded" src={item.image} sx={ImageTheme} />
                 </ListItemAvatar>
                 <ListItemText primary={item.title} secondary={item.location} />
               </ListItemButton>

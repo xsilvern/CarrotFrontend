@@ -11,24 +11,58 @@ import {
 } from "@mui/material";
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import TradeAppBar from "./TradeAppBar";
+import { tradeItems } from "../data";
+
+type TradeItem = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  location: string;
+  createdAt: Date;
+  updatedAt?: Date;
+  price: number;
+  char?: number;
+  interest?: number;
+  isAdjustable: boolean;
+};
 
 const TradeDetail = (): JSX.Element => {
+  const [tradeItem, setTradeItem] = useState<TradeItem>();
+  const readArticles = async () => {
+    const { data } = await axios.get("http://localhost:5000/trade/articles/1");
+    setTradeItem(data);
+  };
+
+  useEffect(() => {
+    readArticles();
+  }, []);
   return (
     <>
       <Box padding="20px">
         <Grid container>
           <Grid item xs={1}>
-            <Avatar src="이미지 주소" sx={{ width: 80, height: 80 }} />
+            <Avatar
+              src={tradeItem && tradeItem.image}
+              sx={{ width: 80, height: 80 }}
+            />
           </Grid>
           <Grid item xs={9}>
             <Grid container>
               <Grid item xs={12}>
-                <Typography variant="h6">아이디</Typography>
+                <Typography variant="h6">
+                  {tradeItem && tradeItem.id}
+                </Typography>
               </Grid>
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">지역</Typography>
+                <Typography variant="subtitle1">
+                  {tradeItem && tradeItem.location}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -53,53 +87,16 @@ const TradeDetail = (): JSX.Element => {
       </Box>
       <Box>
         <hr color="#dddddd" />
-        <Typography variant="h4">제목</Typography>
-        <Box>
-          물건 팝니다.
-          <br />
-          아주 싸게 팝니다.
-        </Box>
+        <Typography variant="h4">{tradeItem && tradeItem.title}</Typography>
+        <Box>{tradeItem && tradeItem.description}</Box>
       </Box>
-      <AppBar
-        position="fixed"
-        color="primary"
-        sx={{ top: "auto", bottom: 0, backgroundColor: "#ffffff" }}
-      >
-        <Toolbar>
-          <Grid container>
-            <Grid
-              item
-              xs={1}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                alignContent: "center",
-              }}
-            >
-              <FavoriteBorderIcon color="primary" fontSize="large" />
-            </Grid>
-            <Grid item xs={8}>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant="h5" color="#2b2b2b">
-                    <strong>30000원</strong>
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="#2b2b2b">
-                    <strong>가격 제안하기</strong>
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="contained" color="secondary" fullWidth>
-                채팅으로 거래하기
-              </Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
+      {tradeItem && (
+        <TradeAppBar
+          price={tradeItem.price}
+          isAdjustable={tradeItem.isAdjustable}
+          isInterest={true}
+        />
+      )}
     </>
   );
 };

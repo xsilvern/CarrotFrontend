@@ -1,32 +1,18 @@
-import React, { ChangeEvent, KeyboardEvent } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Button from "./Button";
-import Title from "./Title";
-import Text from "./Text";
-import Adult from "./Adult";
-import Photo from "./Photo";
-import Counter from "./Counter";
-import Adder from "./Adder";
-import WelcomeName from "./WelcomeName";
-import ConditionalText from "./ConditionalText";
-import HiddenNameText from "./HiddenName";
-import { useState } from "react";
-import Calculator from "./pages/Test/components/Calculator";
-import Test from "./pages/Test/components";
-const App = () => {
-  const [latestName, setLatestName] = useState("");
-  const updateLatestName = (name: string) => {
-    setLatestName(name);
-  };
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import BottomAppBar from "./components/BottomAppBar";
+import Home from "./pages/Home";
+import TradeAppBar from "./pages/Home/TradeDetail/TradeAppBar";
+import Chatt from "./pages/chat";
+
+const App = (): JSX.Element => {
   return (
-    <>
-      <Button name="hello" callback={updateLatestName} />
-      <Button name="world" callback={updateLatestName} />
-      <Button name="nextop" callback={updateLatestName} />
-      <article>{latestName} is clicked!</article>
-      <Test />
-    </>
+    <main>
+      <Toolbar />
+      <Chatt />
+      <Toolbar />
+    </main>
   );
 };
 
